@@ -8,12 +8,11 @@ var jsonParser = bodyParser.json();
 module.exports = router;
 
 router.get('/', function(req, res) {
-
 	models.User.findOne({ where: { id: 1 }})
 	.then(function(user) {
 		return user.getRecipes();
 	})
 	.then(function(recipes) {
-		console.log(JSON.stringify(recipes));
+		res.send(recipes);
 	});
 });
