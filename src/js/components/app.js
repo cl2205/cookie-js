@@ -1,3 +1,4 @@
+// root component
 var React = require('react');
 var AppStore = require('../stores/app-store');
 var savedRecipeStore = require('../stores/saved-recipe-store');
