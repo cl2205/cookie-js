@@ -1,14 +1,5 @@
 // create object defining list of action constants
-// module.exports = {
-// 	ADD_RECIPE: 'ADD_RECIPE',
-// 	REMOVE_RECIPE: 'REMOVE_RECIPE',
-// 	SELECT_RECIPE: 'SELECT_RECIPE',
-// 	REQUEST_DATA: 'REQUEST_DATA',
-// 	LOAD_ALL_DATA: 'LOAD_ALL_DATA',
-// 	SAVED_VISIBLE: 'SAVED_VISIBLE'
-// };
 
-// create a list of actions
 export default {
 	SAVE_RECIPE: 'SAVE_RECIPE',
 	UNSAVE_RECIPE: 'UNSAVE_RECIPE',

@@ -1,6 +1,6 @@
 import React from 'react';
 import AppStore from '../../stores/app-store';
-import StoreWatchMixin from '../../mixins/StoreWatchMixin';	// component on top right keeping track of state of app by keeping track of # of recipes in cart
+import StoreWatchMixin from '../../mixins/StoreWatchMixin';
 import { Link } from 'react-router'; // allows us to create links in app
 
 

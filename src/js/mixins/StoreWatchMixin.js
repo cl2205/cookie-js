@@ -1,7 +1,9 @@
 import React from 'react';
 import AppStore from '../stores/app-store.js';
 import AppActions from '../actions/app-actions';
-									// function to get the componenet's initial state
+
+// set up ES6 Higher-Order Class Component
+									// cb to get the componenet's initial state
 export default ( InnerComponent, stateCallback ) => class extends React.Component {
 	constructor(props) {
 		super(props);
@@ -12,11 +14,6 @@ export default ( InnerComponent, stateCallback ) => class extends React.Componen
 	componentWillMount() {
 		AppStore.addChangeListener( this._onChange );
 	}
-
-	// componentDidMount() {
-	// 	AppStore.addChangeListener( this._onChange );
-	// 	// AppActions.getAllRecipes();
-	// }
 
 	componentWillUnmount() {
 		AppStore.removeChangeListener( this._onChange );

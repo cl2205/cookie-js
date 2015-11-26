@@ -4,7 +4,7 @@ import AppCartItem from './app-saved-cart-item';
 import StoreWatchMixin from '../../mixins/StoreWatchMixin';
 import { Link } from 'react-router';
 
-// to get our state
+// to get our initial state
 const cartItems = () => {
 	return { items: AppStore.getSaved() }
 }
