@@ -1,54 +1,71 @@
 // root component
-var React = require('react');
-var AppStore = require('../stores/app-store');
-var savedRecipeStore = require('../stores/saved-recipe-store');
-var AllRecipes = require('./all-recipes');
-var AppActions = require('../actions/app-actions');
+import React from 'react';
+import Catalog from './catalog/app-catalog';
+import Cart from './cart/app-saved-cart';
 
-// private method to retrieve state from Store
-function getState() {
-	console.log("called getState");
-	return {
-		catalog: AppStore.returnAllRecipes(),
-		savedRecipes: savedRecipeStore.getSavedRecipes(),
-		savedVisible: savedRecipeStore.getListVisible(),
-		selectedRecipe: AppStore.getSelected()
-	};
+export default class App extends React.Component {
+	render() {
+		return (
+			<div className="container">
+				<Catalog />
+				<Cart />
+			</div>
+		)
+	}
 }
 
+
+
+// var AppStore = require('../stores/app-store');
+// var savedRecipeStore = require('../stores/saved-recipe-store');
+// var AllRecipes = require('./all-recipes');
+// var AppActions = require('../actions/app-actions');
+
+// private method to retrieve state from Store
+// function getState() {
+// 	console.log("called getState");
+// 	return {
+// 		catalog: AppStore.returnAllRecipes(),
+// 		savedRecipes: savedRecipeStore.getSavedRecipes(),
+// 		savedVisible: savedRecipeStore.getListVisible(),
+// 		selectedRecipe: AppStore.getSelected()
+// 	};
+// }
+
 // Define main Controller View
-var App = React.createClass({
+// var App = React.createClass({
 
-	// Get initial state from stores
-	getInitialState: function() {
-		return getState();
-	},
-	// Add change listeners to stores
-	componentDidMount: function() {
+// 	// Get initial state from stores
+// 	getInitialState: function() {
+// 		return getState();
+// 	},
+// 	// Add change listeners to stores
+// 	componentDidMount: function() {
 
-		AppStore.addChangeListener(this._onChange);
-		AppActions.getAllRecipes();
-	},
+// 		AppStore.addChangeListener(this._onChange);
+// 		AppActions.getAllRecipes();
+// 	},
 
-	// Remove change listeners from stores
-	componentWillUnmount: function() {
-		AppStore.removeChangeListener(this._onChange);
-	},
+// 	// Remove change listeners from stores
+// 	componentWillUnmount: function() {
+// 		AppStore.removeChangeListener(this._onChange);
+// 	},
 
-	// Method to setState based upon Store changes
-	_onChange: function() {
-		console.log("heard change event");
-		this.setState(getState());
-	},
+// 	// Method to setState based upon Store changes
+// 	_onChange: function() {
+// 		console.log("heard change event");
+// 		this.setState(getState());
+// 	},
 
-	// Render our child components, passing state via props
-	render: function() {
+// 	// Render our child components, passing state via props
+// 	render: function() {
 
-		console.log("This.state: ", this.state);
-		return (
-			<AllRecipes catalog={this.state.catalog} visible={this.state.savedVisible} />		
-		);
-	}
-});
+// 		console.log("This.state: ", this.state);
+// 		return (
+// 			<AllRecipes catalog={this.state.catalog} visible={this.state.savedVisible} />		
+// 		);
+// 	}
+// });
 
-module.exports = App;
+
+// module.exports = App;

@@ -1,19 +1,20 @@
-var AppConstants = require('../constants/app-constants');
-var AppDispatcher = require('../dispatchers/app-dispatcher');
-var assign = require('react/lib/Object.assign'); // object.assign from React library
-var EventEmitter = require('events').EventEmitter; // event emitter from Node
 
-var CHANGE_EVENT = 'change'; // what we broadcast every time something changes in app-dispatcher
+import AppConstants from '../constants/app-constants';
+import { dispatch, register } from '../dispatchers/app-dispatcher';
+import { EventEmitter } from 'events';
+
+const CHANGE_EVENT = 'change';
+// var AppConstants = require('../constants/app-constants');
+// var AppDispatcher = require('../dispatchers/app-dispatcher');
+// var assign = require('react/lib/Object.assign'); // object.assign from React library
+// var EventEmitter = require('events').EventEmitter; // event emitter from Node
+
+// var CHANGE_EVENT = 'change'; // what we broadcast every time something changes in app-dispatcher
 var _catalog = [], _selected = null;
+var _savedItems = [];
 
+// Store manages the state of our Flux application
 	
-function loadRecipeData(data) {
-	console.log("data in loadrecipedata: ", data);
-	// _catalog.push(data);
-	_catalog = data;
-	console.log("catalog: ", _catalog);
-
-}
 
 function getAllRecipes() {
 	console.log("called getAllRecipes");
@@ -26,63 +27,98 @@ function setSelected(index) {
 	_selected = _catalog[index];
 }
 
-// Extend Store with EventEmitter to add eventing capabilities
-var AppStore = assign(EventEmitter.prototype, {
+function saveRecipe(recipe) {
+	_savedItems.push(recipe);
+}
 
-	// Return all recipe data
-	getRecipeCatalog: function(data) {
-		console.log("called getRecipeCatalog");
-		loadRecipeData(data);
+function unsaveRecipe(index) {
+	_savedItems.splice(_savedItems.findIndex( i => i === index), 1);
+}
 
-	},
+// const totalSaved = _savedItems.length;
+// extend Event Emitter with new properties
+const AppStore = Object.assign(EventEmitter.prototype, {
 
-	returnAllRecipes: function() {
-		return getAllRecipes();
+// Return all recipe data
+
+	// getCatalog() {
+	// 	return _catalog.map(item => {
+	// 		return Object.assign( {}, item, _cartItems.find( cItem => cItem.id === item.id))
+	// 	})
+	// },
+
+	getRecipeCatalog() {
+		return _catalog;
 	},
 
 	// Return selected recipe
-	selectRecipe: function(index) {
+	selectRecipe(index) {
 		setSelected(index);
 	},
 
-	getSelected: function() {
+
+	getSaved() {
+		return _savedItems;
+	},
+
+	getTotalSaved() {
+		return _savedItems.length;
+	},
+
+	getSelected() {
 		return _selected;
 	},
 
-	// Emit change event
-	emitChange: function() {
+	emitChange() {
 		console.log("Emit Change");
 		this.emit(CHANGE_EVENT);
 	},
 
-	addChangeListener: function(callback) {
+	addChangeListener(callback) {
 		this.on(CHANGE_EVENT, callback);
 	},
 
-	removeChangeListener: function(callback) {
+	removeChangeListener(callback) {
 		this.removeListener(CHANGE_EVENT, callback);
 	}
-
 });
 
+function loadRecipeData(data) {
+	console.log("data in loadrecipedata: ", data);
+	// _catalog.push(data);
+	_catalog = data;
+	console.log("catalog: ", _catalog);
+
+}
 
 // Register callback with AppDispatcher
-AppStore.dispatchToken = AppDispatcher.register(function(payload) {
-	console.log("Payload:", payload);
-	var action = payload.action; // our action from handleViewAction
+AppStore.dispatchToken = register(function(action) {
+
 	console.log("ACTIONTYPE: ", action.actionType);
+	console.log("ACTION: ", action);
+
 
 	switch(action.actionType) {
 
 		// Respond to LOAD_DATA_RESPONSE action
-		case AppConstants.LOAD_DATA_RESPONSE:
+		case AppConstants.LOAD_ALL_DATA:
 			console.log("load data response event");
+			console.log("action: ", action);
 			loadRecipeData(action.data);
 			break;
 
 		case AppConstants.REQUEST_DATA:
 			console.log("request data event");
-			getAllRecipes();
+			break;
+
+		case AppConstants.SAVE_RECIPE:
+			console.log("save recipe event");
+			saveRecipe(action.recipe);
+			break;
+
+		case AppConstants.UNSAVE_RECIPE:
+			console.log("unsave recipe event");
+			unsaveRecipe(action.recipe);
 			break;
 
 		// Respond to SELECT_RECIPE action
@@ -100,5 +136,45 @@ AppStore.dispatchToken = AppDispatcher.register(function(payload) {
 
 });
 
-module.exports = AppStore;
+// module.exports = AppStore;
+export default AppStore;
+
+// Extend Store with EventEmitter to add eventing capabilities
+// var AppStore = assign(EventEmitter.prototype, {
+
+// 	// Return all recipe data
+// 	getRecipeCatalog: function(data) {
+// 		console.log("called getRecipeCatalog");
+// 		loadRecipeData(data);
+
+// 	},
+
+// 	returnAllRecipes: function() {
+// 		return getAllRecipes();
+// 	},
+
+// 	// Return selected recipe
+// 	selectRecipe: function(index) {
+// 		setSelected(index);
+// 	},
+
+// 	getSelected: function() {
+// 		return _selected;
+// 	},
+
+// 	// Emit change event
+// 	emitChange: function() {
+// 		console.log("Emit Change");
+// 		this.emit(CHANGE_EVENT);
+// 	},
+
+// 	addChangeListener: function(callback) {
+// 		this.on(CHANGE_EVENT, callback);
+// 	},
+
+// 	removeChangeListener: function(callback) {
+// 		this.removeListener(CHANGE_EVENT, callback);
+// 	}
+
+// });
 

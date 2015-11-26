@@ -2,6 +2,7 @@ var gulp = require('gulp'),
 	browserify = require('browserify'),
 	reactify = require('reactify'), // convert jsx to JS
 	source = require('vinyl-source-stream'); // convert browserify string to a stream for gulp input
+
 	// uglify = require('gulp-uglify'), // minify
 	// plumber = require('gulp-plumber'),
 	// imagemin = require('gulp-imagemin');
@@ -10,7 +11,7 @@ var gulp = require('gulp'),
 // Scripts Task
 
 gulp.task('browserify', function() {
-	browserify('./src/js/main.js')	// call browserify, give it our entry point to our app, which is main.js
+	browserify('./app/js/main.js')	// call browserify, give it our entry point to our app, which is main.js
 		.transform('reactify')	// covert jsx to js
 		.bundle()	// output
 		.pipe(source('main.js'))	// pipe to our source (vinyl stream source) to main.js
@@ -19,14 +20,14 @@ gulp.task('browserify', function() {
 
 
 gulp.task('copy', function() {
-	gulp.src('src/index.html')
+	gulp.src('app/index.html')
 		.pipe(gulp.dest('dist'));
-	gulp.src('src/index.html')
+	gulp.src('app/index.html')
 		.pipe(gulp.dest('dist/assets'));
 })
 
 gulp.task('default', ['browserify', 'copy'], function() {
-	return gulp.watch('src/**/*.*', ['browserify', 'copy'])
+	return gulp.watch('app/**/*.*', ['browserify', 'copy']);
 });
 
 // gulp.task('scripts', function() {
