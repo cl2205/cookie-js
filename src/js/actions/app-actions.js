@@ -4,7 +4,7 @@ import AppConstants from '../constants/app-constants';
 // var AppDispatcher = require('../dispatchers/app-dispatcher');
 import { dispatch, register } from '../dispatchers/app-dispatcher';
 
-var WebAPIUtils = require('../utils/WebAPIUtils');
+// import WebAPIUtils from '../utils/WebAPIUtils';
 
 
 // API calls here
@@ -15,15 +15,15 @@ export default {
 			actionType: AppConstants.REQUEST_DATA	
 		});
 
-		WebAPIUtils.getRecipeCatalog()
-			.then(function(data) {
-				dispatch({
-					actionType: AppConstants.LOAD_ALL_DATA, data
-				})
-			})
-			.catch(function(err) {
-				console.log("error: ", err);
-			});
+		// WebAPIUtils.getRecipeCatalog()
+		// 	.then(function(data) {
+		// 		dispatch({
+		// 			actionType: AppConstants.LOAD_ALL_DATA, data
+		// 		})
+		// 	})
+		// 	.catch(function(err) {
+		// 		console.log("error: ", err);
+		// 	});
 
 	},
 
@@ -39,9 +39,9 @@ export default {
 		})
 	},
 
-	unsaveRecipe(index) {
+	unsaveRecipe(recipe) {
 		dispatch({
-			actionType: AppConstants.UNSAVE_RECIPE, index
+			actionType: AppConstants.UNSAVE_RECIPE, recipe
 		})
 	},
 

@@ -2,6 +2,7 @@ import React from 'react';
 import AppStore from '../../stores/app-store';
 import AppCartItem from './app-saved-cart-item';
 import StoreWatchMixin from '../../mixins/StoreWatchMixin';
+import { Link } from 'react-router';
 
 // to get our state
 const cartItems = () => {
@@ -22,7 +23,7 @@ const Cart = (props) => {
 
 	return (
 		<div>
-			<h1>Saved Cart</h1>
+			<h3>Saved Recipes</h3>
 			<table className="table table-hover">
 				<thead>
 					<tr>
@@ -40,10 +41,9 @@ const Cart = (props) => {
 					</tr>
 				</tfoot>
 			</table>
+			<Link to="/">Back to Recipe Catalog</Link>
 		</div>
-
-	)
-
+	);
 }
 
 export default StoreWatchMixin(Cart, cartItems);

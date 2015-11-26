@@ -2,71 +2,44 @@
 import AppConstants from '../constants/app-constants';
 import { dispatch, register } from '../dispatchers/app-dispatcher';
 import { EventEmitter } from 'events';
+import WebAPIUtils from '../api/WebAPIUtils';
 
 const CHANGE_EVENT = 'change';
+// Store manages the state of our Flux application
+
 // var AppConstants = require('../constants/app-constants');
 // var AppDispatcher = require('../dispatchers/app-dispatcher');
 // var assign = require('react/lib/Object.assign'); // object.assign from React library
 // var EventEmitter = require('events').EventEmitter; // event emitter from Node
 
 // var CHANGE_EVENT = 'change'; // what we broadcast every time something changes in app-dispatcher
-var _catalog = [], _selected = null;
-var _savedItems = [];
-
-// Store manages the state of our Flux application
-	
-
-function getAllRecipes() {
-	console.log("called getAllRecipes");
-	console.log("returned ", _catalog);
-	return _catalog;
-
-}
-
-function setSelected(index) {
-	_selected = _catalog[index];
-}
-
-function saveRecipe(recipe) {
-	_savedItems.push(recipe);
-}
-
-function unsaveRecipe(index) {
-	_savedItems.splice(_savedItems.findIndex( i => i === index), 1);
-}
 
 // const totalSaved = _savedItems.length;
 // extend Event Emitter with new properties
 const AppStore = Object.assign(EventEmitter.prototype, {
 
-// Return all recipe data
-
-	// getCatalog() {
-	// 	return _catalog.map(item => {
-	// 		return Object.assign( {}, item, _cartItems.find( cItem => cItem.id === item.id))
-	// 	})
+	// Return selected recipe
+	// selectRecipe(index) {
+	// 	setSelected(index);
 	// },
 
+	// Return all recipe data
 	getRecipeCatalog() {
-		return _catalog;
+		return WebAPIUtils.getCatalog();
 	},
-
-	// Return selected recipe
-	selectRecipe(index) {
-		setSelected(index);
-	},
-
 
 	getSaved() {
-		return _savedItems;
+		return WebAPIUtils.savedItems;
 	},
 
 	getTotalSaved() {
-		return _savedItems.length;
+		return WebAPIUtils.getSavedCount();
+		// let total = _savedItems.length;
+		// return {total};
 	},
 
 	getSelected() {
-		return _selected;
+		return WebAPIUtils.selected;
 	},
 
 	emitChange() {
@@ -83,13 +56,7 @@ const AppStore = Object.assign(EventEmitter.prototype, {
 	}
 });
 
-function loadRecipeData(data) {
-	console.log("data in loadrecipedata: ", data);
-	// _catalog.push(data);
-	_catalog = data;
-	console.log("catalog: ", _catalog);
 
-}
 
 // Register callback with AppDispatcher
 AppStore.dispatchToken = register(function(action) {
@@ -104,7 +71,6 @@ AppStore.dispatchToken = register(function(action) {
 		case AppConstants.LOAD_ALL_DATA:
 			console.log("load data response event");
 			console.log("action: ", action);
-			loadRecipeData(action.data);
 			break;
 
 		case AppConstants.REQUEST_DATA:
@@ -113,12 +79,12 @@ AppStore.dispatchToken = register(function(action) {
 
 		case AppConstants.SAVE_RECIPE:
 			console.log("save recipe event");
-			saveRecipe(action.recipe);
+			WebAPIUtils.saveRecipe(action.recipe);
 			break;
 
 		case AppConstants.UNSAVE_RECIPE:
 			console.log("unsave recipe event");
-			unsaveRecipe(action.recipe);
+			WebAPIUtils.unsaveRecipe(action.recipe);
 			break;
 
 		// Respond to SELECT_RECIPE action
