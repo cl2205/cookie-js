@@ -14,8 +14,8 @@ export default (props) => {
 	return (
 		<div className="col-xs-6 col-sm-4 col-md-3" style={itemStyle}>
 			<h5>{ props.item.name }</h5>
-			<img src="http://placehold.it/250x250" width="100%" className="img-responsive"/>
-			<p>{ props.item.id }</p>
+			<img src={ props.item.pictureUrl } width="100%" className="img-responsive"/>
+			<p>{ props.item.cuisine }</p>
 
 
 			<div className="btn-group">

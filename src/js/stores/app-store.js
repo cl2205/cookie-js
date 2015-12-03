@@ -29,6 +29,10 @@ const AppStore = Object.assign(EventEmitter.prototype, {
 		return WebAPIUtils.selected;
 	},
 
+	getRecipeDetail(recipeId) {
+		return WebAPIUtils.getRecipeDetail(recipeId);
+	},
+
 		// Return selected recipe
 	// selectRecipe(index) {
 	// 	setSelected(index);
@@ -57,6 +61,12 @@ AppStore.dispatchToken = register(function(action) {
 
 		case AppConstants.LOAD_ALL_DATA:
 			console.log("load all data event");
+			break;
+
+		case AppConstants.LOAD_RECIPE_DETAIL:
+			console.log("load recipe detail event");
+			WebAPIUtils.loadRecipeDetail(action.recipeId);
+			// WebAPIUtils.getRecipeDetail(action.recipeDetail.id);
 			break;
 
 		case AppConstants.REQUEST_DATA:

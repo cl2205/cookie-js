@@ -6,7 +6,7 @@ module.exports = function(db) {
 		// ingredient_id,
 		// id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
 		quantity: Sequelize.FLOAT,
-		unit: Sequelize.STRING
+		unit: Sequelize.STRING,
 		// recipe_id: {
 		// 	type: Sequelize.INTEGER,
 		// 	references: {
@@ -14,6 +14,8 @@ module.exports = function(db) {
 		// 		key: 'id'
 		// 	}
 		// }
+	}, {
+		timestamps: false
 	});
 
 	return RecipeIngredient;

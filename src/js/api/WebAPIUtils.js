@@ -6,9 +6,14 @@ import AppConstants from '../constants/app-constants';
 const WebAPIUtils = {
 	catalog: [],
 	selected: null,
+	recipeDetail: {},
 	savedItems: [],
 	getCatalog() {
 		return this.catalog;
+	},
+
+	getRecipeDetail(recipeId) {
+		return this.recipeDetail;
 	},
 
 	getSavedCount( total = this.savedItems.length) {
@@ -20,6 +25,26 @@ const WebAPIUtils = {
 	},
 	unsaveRecipe(recipe) {
 		this.savedItems.splice(this.savedItems.findIndex( i => i === recipe), 1);
+	},
+
+	loadRecipeDetail(recipeId) {
+		let self = this;
+		console.log("typeof recipeId: ", typeof recipeId);
+		return request.get('http://localhost:3000/api/' + recipeId)
+			.then(function(response) {
+				self.recipeDetail = response.data;
+				console.log("self.recipeDetail: ", self.recipeDetail);
+				return self.recipeDetail;
+			})
+			.then(function(recipeDetail) {
+				console.log("hit here");
+				return dispatch({
+					actionType: AppConstants.LOAD_RECIPE_DETAIL, recipeDetail
+				});
+			})
+			.catch(function(err) {
+				console.log("recipeDetail error: ", err);
+			});
 	},
 
 	init() {

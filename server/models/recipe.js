@@ -4,10 +4,12 @@ var Sequelize = require('sequelize');
 // and defines a recipe table on it
 module.exports = function(db) {
 	var Recipe = db.define('Recipe', {
-		// id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
 		name: Sequelize.STRING,
 		description: Sequelize.STRING,
-		cuisine: Sequelize.STRING
+		cuisine: Sequelize.STRING,
+		pictureUrl: Sequelize.STRING,
+		instructions: Sequelize.STRING,
+		type: Sequelize.STRING
 	}, {
 		timestamps: false
 	});

@@ -14,8 +14,11 @@ app.listen(3000, function() {
 });
 
 
-//static files routing
+// body parsing
+// app.use(bodyParser);
+// app.use(jsonParser);
 
+//static files routing
 app.use(express.static(browserPath));
 
 // custom logging middleware
